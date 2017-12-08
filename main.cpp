@@ -14,6 +14,7 @@
 
 using namespace std;
 map<int , int> nodeIDs;
+int curr1 = 0;
 
 struct Data {
     string owner_name ;
@@ -28,7 +29,7 @@ struct node {
     string time ;
     Data data_node ;
     int nodeID ;
-    static int node_number ;
+    int node_number ;
     node *ref_ParentID ;
     node *ref_ChildNode ;
     void getData(Data data_node);
@@ -97,11 +98,13 @@ node *Create_newNode(node *parent) {
     n->getData(n->data_node);
     
     // Initializing incremental node_number and the reference parentID
-    if (n->node_number == 0) {
+    if (curr1 == 0) {
         n->node_number = 1;
+        curr1 += 1;
         n->ref_ParentID = NULL;
     }else {
-        n->node_number = n->node_number+1;
+        n->node_number = curr1;
+        curr1 += 1;
         n->ref_ParentID = parent;
     }
     
@@ -121,49 +124,47 @@ node *Create_newNode(node *parent) {
 
 class Admin {
     
-    public:
+public:
     
-        node *Hdr;
-        node* childNode[];
+    node *Hdr;
+    node* childNode[];
     
-        // Creates Header node
-        Admin *create_firstNode(node *new_node) {
-            Admin *n1 = new Admin;
-            n1->Hdr = new_node;
-            return n1;
-        }
+    // Creates Header node
+    Admin *create_firstNode(node *new_node) {
+        Admin *n1 = new Admin;
+        n1->Hdr = new_node;
+        return n1;
+    }
     
-        // Creates MultiSet of the header node
-        void createMultiSet(Admin *head) ;
+    // Creates MultiSet of the header node
+    void createMultiSet(Admin *head) ;
     
-        // Add new node to the multiset node
-        void add_newNode(Admin *head, int nodeNum,int n) ;
+    // Add new node to the multiset node
+    void add_newNode(Admin *head, int nodeNum,int n) ;
     
-        // Encryption of the node data
-        void EncryptNodeData(int node_number, int key, int password) ;
+    // Encryption of the node data
+    void EncryptNodeData(int node_number, int key, int password) ;
     
-        // Verification of the owner
-        bool verifyOwner(int key, int password) ;
+    // Verification of the owner
+    bool verifyOwner(int key, int password) ;
     
-        // Still analysing
-        void breakUpNode(int key, int password) ;
+    // Still analysing
+    void breakUpNode(int key, int password) ;
     
-        // Transfer Owner
-        void transferOwner(int key, int value, int nodeID) ;
+    // Transfer Owner
+    void transferOwner(int key, int value, int nodeID) ;
     
-        // Find longer Chain
-        void findLongerChain() ;
+    // Find longer Chain
+    void findLongerChain() ;
     
-        // Merge two given nodes
-        void mergeNode(node *node1, node *node2) ;
+    // Merge two given nodes
+    void mergeNode(node *node1, node *node2) ;
 } ;
 
 void Admin::createMultiSet(Admin *head) {
     cout << "Wants to create multi set of the node?\n" ;
     int n ;
     cin >> n ;
-    node* temp = head->Hdr ;
-    int incremental_Num = temp->node_number+1 ;
     for (int i = 0 ; i < n ; i++) {
         // Currently initializing basic features of the multiset
         // Initialized new node
@@ -176,8 +177,8 @@ void Admin::createMultiSet(Admin *head) {
         head->childNode[i]->ref_ChildNode = NULL;
         
         //Initialized incremental number
-        head->childNode[i]->node_number = incremental_Num ;
-        incremental_Num++ ;
+        head->childNode[i]->node_number = curr1 ;
+        curr1++ ;
         map_node[head->childNode[i]->node_number] = *head->childNode[i];
     }
 }
