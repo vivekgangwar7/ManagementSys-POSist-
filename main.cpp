@@ -223,19 +223,21 @@ void Admin::EncryptNodeData(int node_number, int key, int password) {
 
 
 void Admin::breakUpNode(int key, int password) {
-    
+    // require database access
 }
 
 void Admin::transferOwner(int key, int value, int nodeID) {
-    
+    // require database access
 }
 
 void Admin::findLongerChain() {
-    
+    // applying depth first search on findingLongerChain can work
 }
 
 void Admin::mergeNode(node *node1, node *node2) {
-    
+    // Find the lowest common ancestor of the two nodes.
+    // the lca found suppose x
+    // merge both the nodes at that particular point
 }
 
 int main(int argc, const char * argv[]) {
