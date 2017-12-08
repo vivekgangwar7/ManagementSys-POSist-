@@ -35,6 +35,30 @@ struct node {
     void putData(Data data_node, node *hdr);
 };
 
+map<int, node> map_node;
+//Additive Cipher
+string encrypt(string str, int key) {
+    for (int i = 0 ; i < str.length() ; i++) {
+        if (isupper(str[i])) {
+            str[i] = (char)(((int)str[i]+key-65)%26+65);
+        }else {
+            str[i] = (char)(((int)str[i]+key-97)%26+97);
+        }
+    }
+    return str;
+}
+
+//Decrypt
+string decrypt(string str, int key) {
+    for (int i = 0 ; i < str.length() ; i++) {
+        if (isupper(str[i])) {
+            str[i] = (char)(((int)str[i]-key-65)%26+65);
+        }else {
+            str[i] = (char)(((int)str[i]-key-97)%26+97);
+        }
+    }
+    return str;
+}
 void node::getData(Data data_node) {
     cout << "Owner Name : " << data_node.owner_name << endl ;
     cout << "Address : " << data_node.address << endl ;
@@ -118,7 +142,7 @@ class Admin {
         void EncryptNodeData(int node_number, int key, int password) ;
     
         // Verification of the owner
-        void verifyOwner(int key, int password) ;
+        bool verifyOwner(int key, int password) ;
     
         // Still analysing
         void breakUpNode(int key, int password) ;
@@ -153,6 +177,7 @@ void Admin::createMultiSet(Admin *head) {
         //Initialized incremental number
         head->childNode[i]->node_number = incremental_Num ;
         incremental_Num++ ;
+        map_node[head->childNode[i]->node_number] = *head->childNode[i];
     }
 }
 
@@ -172,12 +197,47 @@ void Admin::add_newNode(Admin *head,int nodeNum, int n) {
     }
 }
 
+bool Admin::verifyOwner(int key, int password) {
+    //requires database
+    return true;
+}
+
+void Admin::EncryptNodeData(int node_number, int key, int password) {
+    //find node_number
+    node *temp = new node;
+    temp = &map_node[node_number] ;
+    if (temp == NULL) {
+        cout << "Doesn't Exists!\n";
+    }else {
+        if (verifyOwner(key, password)) {
+            Data dr = temp->data_node;
+            encrypt(dr.owner_name , key);
+            encrypt(dr.address, key);
+            encrypt(dr.mobile_no, key);
+            encrypt(dr.phone, key);
+            encrypt(dr.phone, key);
+        }
+    }
+}
+
+
+void Admin::breakUpNode(int key, int password) {
+    
+}
+
+void Admin::transferOwner(int key, int value, int nodeID) {
+    
+}
+
+void Admin::findLongerChain() {
+    
+}
+
+void Admin::mergeNode(node *node1, node *node2) {
+    
+}
 
 int main(int argc, const char * argv[]) {
-    // insert code here...
-    /*time_t t = time(0);
-    node *parent  = new node;
-    node *new1 = Create_newNode(parent,"vivek", "391 Golden Jubilee", "mno", "As", "asa");
-    cout << new1->data_node.owner_name << endl;*/
+    
     return 0;
 }
