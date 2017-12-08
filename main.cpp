@@ -120,10 +120,11 @@ node *Create_newNode(node *parent) {
 }
 
 class Admin {
-
-    node *Hdr;
-    node* childNode[];
+    
     public:
+    
+        node *Hdr;
+        node* childNode[];
     
         // Creates Header node
         Admin *create_firstNode(node *new_node) {
@@ -238,6 +239,9 @@ void Admin::mergeNode(node *node1, node *node2) {
 }
 
 int main(int argc, const char * argv[]) {
-    
+    Admin *d = new Admin;
+    d->Hdr = new node;
+    d->Hdr = Create_newNode(d->Hdr);
+    d->Hdr->getData(d->Hdr->data_node);
     return 0;
 }
