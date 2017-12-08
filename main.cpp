@@ -32,8 +32,8 @@ struct node {
     int node_number ;
     node *ref_ParentID ;
     node *ref_ChildNode ;
-    void getData(Data data_node);
     void putData(Data data_node, node *hdr);
+    void getData(Data data_node);
 };
 
 map<int, node> map_node;
@@ -95,7 +95,7 @@ node *Create_newNode(node *parent) {
     n->time = yy+'-'+mm+'-'+dd ;
     
     // Retrieving data
-    n->getData(n->data_node);
+    n->putData(n->data_node, n);
     
     // Initializing incremental node_number and the reference parentID
     if (curr1 == 0) {
