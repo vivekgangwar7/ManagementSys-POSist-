@@ -20,7 +20,7 @@ struct Data {
     string address ;
     string mobile_no ;
     string phone ;
-    string value ;
+    float value ;
 };
 
 struct node {
@@ -31,43 +31,33 @@ struct node {
     static int node_number ;
     node *ref_ParentID ;
     node *ref_ChildNode ;
+    void getData(Data data_node);
+    void putData(Data data_node, node *hdr);
 };
 
-class Admin {
+void node::getData(Data data_node) {
+    cout << "Owner Name : " << data_node.owner_name << endl ;
+    cout << "Address : " << data_node.address << endl ;
+    cout << "Mobile number : " << data_node.mobile_no << endl ;
+    cout << "Phone nymber : " << data_node.phone << endl;
+    cout << "Value : " << data_node.value << endl;
+}
 
-    public:
-    
-        // Creates Header node
-        Admin *create_firstNode(node *new_node) {
-            Admin *n1 = new Admin;
-            return n1;
-        }
-    
-        // Creates MultiSet of the header node
-        void createMultiSet(node *head) ;
-    
-        // Add new node to the multiset node
-        node *add_newNode(int nodeNum) ;
-    
-        // Encryption of the node data
-        void EncryptNodeData(int node_number, int key, int password) ;
-    
-        // Verification of the owner
-        void verifyOwner(int key, int password) ;
-    
-        // Still analysing
-        void breakUpNode(int key, int password) ;
-    
-        // Transfer Owner
-        void transferOwner(int key, int value, int nodeID) ;
-    
-        // Find longer Chain
-        void findLongerChain() ;
-    
-        // Merge two given nodes
-        void mergeNode(node *node1, node *node2) ;
-} ;
-node *Create_newNode(node *parent, string oname, string addr, string mno, string phn, string val) {
+void node::putData(Data d_node, node *hdr) {
+    cout << "Enter Owner Name : " ;
+    cin >> d_node.owner_name ;
+    cout << "Enter Address : " ;
+    cin >> d_node.address ;
+    cout << "Enter Mobile Number : " ;
+    cin >> d_node.mobile_no ;
+    cout << "Enter Phone Number : " ;
+    cin >> d_node.phone ;
+    cout << "Enter value : " ;
+    cin >> d_node.value ;
+    hdr->data_node = d_node;
+}
+
+node *Create_newNode(node *parent) {
     // Allocates memory
     node *n = new node ;
     
@@ -80,11 +70,7 @@ node *Create_newNode(node *parent, string oname, string addr, string mno, string
     n->time = yy+'-'+mm+'-'+dd ;
     
     // Retrieving data
-    n->data_node.owner_name = oname ;
-    n->data_node.address = addr ;
-    n->data_node.mobile_no = mno ;
-    n->data_node.phone = phn ;
-    n->data_node.value = val ;
+    n->getData(n->data_node);
     
     // Initializing incremental node_number and the reference parentID
     if (n->node_number == 0) {
@@ -104,7 +90,86 @@ node *Create_newNode(node *parent, string oname, string addr, string mno, string
     n->nodeID = nID;
     
     // ref_ChildNode
+    n->ref_ChildNode = NULL;
+    
     return n;
+}
+
+class Admin {
+
+    node *Hdr;
+    node* childNode[];
+    public:
+    
+        // Creates Header node
+        Admin *create_firstNode(node *new_node) {
+            Admin *n1 = new Admin;
+            n1->Hdr = new_node;
+            return n1;
+        }
+    
+        // Creates MultiSet of the header node
+        void createMultiSet(Admin *head) ;
+    
+        // Add new node to the multiset node
+        void add_newNode(Admin *head, int nodeNum,int n) ;
+    
+        // Encryption of the node data
+        void EncryptNodeData(int node_number, int key, int password) ;
+    
+        // Verification of the owner
+        void verifyOwner(int key, int password) ;
+    
+        // Still analysing
+        void breakUpNode(int key, int password) ;
+    
+        // Transfer Owner
+        void transferOwner(int key, int value, int nodeID) ;
+    
+        // Find longer Chain
+        void findLongerChain() ;
+    
+        // Merge two given nodes
+        void mergeNode(node *node1, node *node2) ;
+} ;
+
+void Admin::createMultiSet(Admin *head) {
+    cout << "Wants to create multi set of the node?\n" ;
+    int n ;
+    cin >> n ;
+    node* temp = head->Hdr ;
+    int incremental_Num = temp->node_number+1 ;
+    for (int i = 0 ; i < n ; i++) {
+        // Currently initializing basic features of the multiset
+        // Initialized new node
+        head->childNode[i] = new node ;
+        
+        //Initialized parent node referencce
+        head->childNode[i]->ref_ParentID = head->Hdr;
+        
+        //Initialized child node reference
+        head->childNode[i]->ref_ChildNode = NULL;
+        
+        //Initialized incremental number
+        head->childNode[i]->node_number = incremental_Num ;
+        incremental_Num++ ;
+    }
+}
+
+// n is the size of the multiset
+void Admin::add_newNode(Admin *head,int nodeNum, int n) {
+    node *add_newNodeH = NULL ;
+    for (int i = 0 ; i < n ; i++) {
+        if (head->childNode[i]->node_number == nodeNum) {
+            add_newNodeH = head->childNode[i];
+            break;
+        }
+    }
+    // add new node
+    if (add_newNodeH != NULL) {
+        node *ChildNode = new node;
+        ChildNode = Create_newNode(add_newNodeH);
+    }
 }
 
 
